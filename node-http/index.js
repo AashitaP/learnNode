@@ -6,38 +6,18 @@ const app = express();
 const morgan = require('morgan');
 const bp = require('body-parser');
 
+const dishRouter = require('./routes/dishRouter');
+
 const hostname = 'localhost';
 const port = 3000;
 
 app.use(morgan('dev'));
-
 app.use(bp.json()); //fills req.body
 
-app.all('/dishes', (req, res, next) => { //does it for all types of requests
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    next(); //will continue to look for additional specificaitions, like continue;
-
-});
-
-app.get('/dishes', (req, res, next) => {
-    res.end('All dishes'); //ends request, sends response
-
-});
-
-app.post('/dishes', (req, res, next) => {
-    res.end('Add dish ' + req.body.name + req.body.description);
-});
-
-app.delete('/dishes', (req, res, next) => {
-    res.end('Deleting all');
-});
-
-app.get('/dishes/:dishId', (req, res, next) => {
+/*app.get('/dishes/:dishId', (req, res, next) => {
     res.end('All dishes: ' + req.params.dishId); 
 
 });
-
 
 app.put('/dishes/:dishId', (req, res, next) => {
     res.end('Add to dish ' + req.body.name + req.body.description);
@@ -46,7 +26,9 @@ app.put('/dishes/:dishId', (req, res, next) => {
 app.delete('/dishes/:dishId', (req, res, next) => {
     res.end('Deleting all');
 });
+*/
 
+app.use('/dishes', dishRouter); //where it is mounted
 
 app.use(express.static(__dirname+'/public')); //serving up files
 
